@@ -1,0 +1,38 @@
+name: Deploy to Cloud Run Jobs
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: "Type 'deploy' to confirm"
+        required: true
+
+env:
+  PROJECT_ID: your-gcp-project
+  JOB: er-pipeline-v7-job
+  REGION: us-central1
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.event.inputs.confirm == 'deploy'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - uses: google-github-actions/setup-gcloud@v2
+
+      - name: Deploy to Cloud Run Jobs
+        run: |
+          gcloud run jobs deploy ${{ env.JOB }} \
+            --source . \
+            --region ${{ env.REGION }} \
+            --project ${{ env.PROJECT_ID }} \
+            --memory 2Gi \
+            --task-timeout 3600 \
+            --quiet
