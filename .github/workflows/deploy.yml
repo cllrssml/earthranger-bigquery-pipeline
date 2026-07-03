@@ -8,7 +8,7 @@ on:
         required: true
 
 env:
-  PROJECT_ID: your-gcp-project
+  PROJECT_ID: ${{ secrets.PROJECT_ID }}
   JOB: er-pipeline-v7-job
   REGION: us-central1
 
