@@ -1,0 +1,7 @@
+gha-creds-*.json
+.git
+.gitignore
+.github/
+__pycache__/
+.venv/
+.env
